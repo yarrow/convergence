@@ -2,8 +2,8 @@ module Pages.Home_ exposing (Model, Msg(..), page)
 
 import Bridge
 import Effect exposing (..)
-import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html exposing (Html, div, h1, img, node, p, text)
+import Html.Attributes as Attr
 import Html.Events exposing (onClick)
 import Lamdera
 import Page exposing (Page)
@@ -93,36 +93,36 @@ view shared model =
                 font-weight: 600 !important;
             }
             """ ]
-        , div [ style "display" "flex", style "gap" "1rem" ]
+        , div [ Attr.style "display" "flex", Attr.style "gap" "1rem" ]
             [ img
-                [ alt "Lando, the Elm Land Rainbow"
-                , src "https://elm.land/images/logo-480.png"
-                , style "width" "128px"
-                , style "margin-right" "2.5rem"
+                [ Attr.alt "Lando, the Elm Land Rainbow"
+                , Attr.src "https://elm.land/images/logo-480.png"
+                , Attr.style "width" "128px"
+                , Attr.style "margin-right" "2.5rem"
                 ]
                 []
             , img
-                [ alt "Laurie, the Lamdera Lambda Llamba"
-                , src "https://lamdera.com/images/llama/floaty.png"
-                , style "width" "81.4px"
-                , style "margin-right" "1.5rem"
-                , style "height" "108.4px"
+                [ Attr.alt "Laurie, the Lamdera Lambda Llamba"
+                , Attr.src "https://lamdera.com/images/llama/floaty.png"
+                , Attr.style "width" "81.4px"
+                , Attr.style "margin-right" "1.5rem"
+                , Attr.style "height" "108.4px"
                 ]
                 []
             ]
         , h1 [] [ text "Elm Land ❤️ Lamdera" ]
         , p
-            [ style "font-family" "Nunito Sans"
-            , style "opacity" "0.75"
+            [ Attr.style "font-family" "Nunito Sans"
+            , Attr.style "opacity" "0.75"
             ]
             [ text "It's working, Mario!!" ]
         , p
-            [ style "font-family" "Nunito Sans"
-            , style "cursor" "pointer"
-            , style "background-color" "#ffffff40"
-            , style "padding" "5px"
-            , style "border-radius" "5px"
-            , style "user-select" "none"
+            [ Attr.style "font-family" "Nunito Sans"
+            , Attr.style "cursor" "pointer"
+            , Attr.style "background-color" "#ffffff40"
+            , Attr.style "padding" "5px"
+            , Attr.style "border-radius" "5px"
+            , Attr.style "user-select" "none"
             , onClick SmashedLikeButton
             ]
             [ text <| "👍 " ++ String.fromInt shared.smashedLikes ]
