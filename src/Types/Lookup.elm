@@ -5,37 +5,37 @@ import Set exposing (Set)
 
 
 type PersonId
-    = PersonId Int
+    = PersonId String
 
 
-personId : Int -> PersonId
+personId : String -> PersonId
 personId id =
     PersonId id
 
 
-idOfPerson : PersonId -> Int
+idOfPerson : PersonId -> String
 idOfPerson (PersonId id) =
     id
 
 
 type OfferingId
-    = OfferingId Int
+    = OfferingId String
 
 
-offeringId : Int -> OfferingId
+offeringId : String -> OfferingId
 offeringId id =
     OfferingId id
 
 
-idOfOffering : OfferingId -> Int
+idOfOffering : OfferingId -> String
 idOfOffering (OfferingId id) =
     id
 
 
 type Pivot
     = Pivot
-        { offeringsOf : Dict Int (Set Int)
-        , personsOf : Dict Int (Set Int)
+        { offeringsOf : Dict String (Set String)
+        , personsOf : Dict String (Set String)
         }
 
 

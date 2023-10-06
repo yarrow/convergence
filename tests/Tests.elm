@@ -9,7 +9,17 @@ suite : Test
 suite =
     describe "xId round trips"
         [ test "idOfPerson(personID x) == x" <|
-            \_ -> Expect.equal (idOfPerson (PersonId 42)) 42
+            \_ ->
+                let
+                    who =
+                        "pond@weed.com"
+                in
+                Expect.equal (idOfPerson (PersonId who)) who
         , test "idOfOffering(personID x) == x" <|
-            \_ -> Expect.equal (idOfOffering (OfferingId 42)) 42
+            \_ ->
+                let
+                    what =
+                        "Herbal Explorations"
+                in
+                Expect.equal (idOfOffering (OfferingId what)) what
         ]
