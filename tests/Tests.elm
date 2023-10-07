@@ -1,5 +1,6 @@
 module Tests exposing (..)
 
+import Array exposing (empty)
 import Expect
 import Test exposing (..)
 import Types.Lookup exposing (..)
@@ -7,19 +8,32 @@ import Types.Lookup exposing (..)
 
 suite : Test
 suite =
-    describe "xId round trips"
-        [ test "idOfPerson(personID x) == x" <|
-            \_ ->
-                let
-                    who =
-                        "pond@weed.com"
-                in
-                Expect.equal (idOfPerson (PersonId who)) who
-        , test "idOfOffering(personID x) == x" <|
-            \_ ->
-                let
-                    what =
-                        "Herbal Explorations"
-                in
-                Expect.equal (idOfOffering (OfferingId what)) what
+    let
+        whoString =
+            "pond@weed.com"
+
+        who =
+            PersonId whoString
+
+        whatString =
+            "Herbal Explorations"
+
+        what =
+            OfferingId whatString
+    in
+    describe "The Lookup module"
+        [ describe "Functions on Pivots"
+            (let
+                single =
+                    insertPair emptyPivot who what
+             in
+             [ test "offeringsOf non-facilitator == []" <|
+                \_ -> Expect.equal (single |> offeringsOf (PersonId "no!body")) []
+             , test "facilitators of non-existent offering == []" <|
+                \_ -> Expect.equal (single |> facilitatorsOf (OfferingId "no!ne")) []
+             , test "offeringsOf who == [what]" <|
+                \_ ->
+                    Expect.equal (single |> offeringsOf who) [ what ]
+             ]
+            )
         ]

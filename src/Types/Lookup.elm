@@ -1,4 +1,12 @@
-module Types.Lookup exposing (..)
+module Types.Lookup exposing
+    ( OfferingId(..)
+    , PersonId(..)
+    , Pivot
+    , emptyPivot
+    , facilitatorsOf
+    , insertPair
+    , offeringsOf
+    )
 
 import Dict exposing (Dict)
 import Set exposing (Set)
@@ -8,37 +16,60 @@ type PersonId
     = PersonId String
 
 
-personId : String -> PersonId
-personId id =
-    PersonId id
-
-
-idOfPerson : PersonId -> String
-idOfPerson (PersonId id) =
-    id
-
-
 type OfferingId
     = OfferingId String
 
 
-offeringId : String -> OfferingId
-offeringId id =
-    OfferingId id
-
-
-idOfOffering : OfferingId -> String
-idOfOffering (OfferingId id) =
-    id
+type alias OthersOf =
+    Dict String (Set String)
 
 
 type Pivot
     = Pivot
-        { offeringsOf : Dict String (Set String)
-        , personsOf : Dict String (Set String)
+        { offeringsOf : OthersOf
+        , personsOf : OthersOf
         }
 
 
-empty : Pivot
-empty =
+emptyPivot : Pivot
+emptyPivot =
     Pivot { offeringsOf = Dict.empty, personsOf = Dict.empty }
+
+
+insertPair : Pivot -> PersonId -> OfferingId -> Pivot
+insertPair (Pivot pivot) (PersonId person) (OfferingId offering) =
+    Pivot
+        { pivot
+            | offeringsOf =
+                Dict.update person
+                    (\maybeSet ->
+                        maybeSet
+                            |> Maybe.withDefault Set.empty
+                            |> Set.insert offering
+                            |> Just
+                    )
+                    pivot.offeringsOf
+        }
+
+
+othersOf : String -> (String -> a) -> OthersOf -> List a
+othersOf key wrap others =
+    others
+        |> Dict.get key
+        |> Maybe.withDefault Set.empty
+        |> Set.toList
+        |> List.map wrap
+
+
+offeringsOf : PersonId -> Pivot -> List OfferingId
+offeringsOf (PersonId person) (Pivot pivot) =
+    pivot.offeringsOf
+        |> Dict.get person
+        |> Maybe.withDefault Set.empty
+        |> Set.toList
+        |> List.map OfferingId
+
+
+facilitatorsOf : OfferingId -> Pivot -> List PersonId
+facilitatorsOf offeringId pivot =
+    []
