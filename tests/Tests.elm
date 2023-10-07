@@ -30,10 +30,13 @@ suite =
              [ test "offeringsOf non-facilitator == []" <|
                 \_ -> Expect.equal (single |> offeringsOf (PersonId "no!body")) []
              , test "facilitators of non-existent offering == []" <|
-                \_ -> Expect.equal (single |> facilitatorsOf (OfferingId "no!ne")) []
+                \_ -> Expect.equal (single |> personsOf (OfferingId "no!ne")) []
              , test "offeringsOf who == [what]" <|
                 \_ ->
                     Expect.equal (single |> offeringsOf who) [ what ]
+             , test "personsOf what == [who]" <|
+                \_ ->
+                    Expect.equal (single |> personsOf what) [ who ]
              ]
             )
         ]

@@ -3,9 +3,9 @@ module Types.Lookup exposing
     , PersonId(..)
     , Pivot
     , emptyPivot
-    , facilitatorsOf
     , insertPair
     , offeringsOf
+    , personsOf
     )
 
 import Dict exposing (Dict)
@@ -62,6 +62,7 @@ insertPair (Pivot pivot) (PersonId person) (OfferingId offering) =
     Pivot
         { pivot
             | offeringsOf = pivot.offeringsOf |> insertOne person offering
+            , personsOf = pivot.personsOf |> insertOne offering person
         }
 
 
@@ -70,6 +71,6 @@ offeringsOf (PersonId person) (Pivot pivot) =
     pivot.offeringsOf |> othersOf person OfferingId
 
 
-facilitatorsOf : OfferingId -> Pivot -> List PersonId
-facilitatorsOf offeringId pivot =
-    []
+personsOf : OfferingId -> Pivot -> List PersonId
+personsOf (OfferingId offering) (Pivot pivot) =
+    pivot.personsOf |> othersOf offering PersonId
