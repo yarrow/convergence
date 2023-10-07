@@ -20,15 +20,24 @@ type OfferingId
     = OfferingId String
 
 
-type alias OthersOf =
+type alias MultiDict =
     Dict String (Set String)
 
 
 type Pivot
     = Pivot
-        { offeringsOf : OthersOf
-        , personsOf : OthersOf
+        { offeringsOf : MultiDict
+        , personsOf : MultiDict
         }
+
+
+othersOf : String -> (String -> a) -> MultiDict -> List a
+othersOf key wrapValue others =
+    others
+        |> Dict.get key
+        |> Maybe.withDefault Set.empty
+        |> Set.toList
+        |> List.map wrapValue
 
 
 emptyPivot : Pivot
@@ -36,38 +45,29 @@ emptyPivot =
     Pivot { offeringsOf = Dict.empty, personsOf = Dict.empty }
 
 
+insertOne : String -> String -> MultiDict -> MultiDict
+insertOne key value dict =
+    Dict.update key
+        (\maybeSet ->
+            maybeSet
+                |> Maybe.withDefault Set.empty
+                |> Set.insert value
+                |> Just
+        )
+        dict
+
+
 insertPair : Pivot -> PersonId -> OfferingId -> Pivot
 insertPair (Pivot pivot) (PersonId person) (OfferingId offering) =
     Pivot
         { pivot
-            | offeringsOf =
-                Dict.update person
-                    (\maybeSet ->
-                        maybeSet
-                            |> Maybe.withDefault Set.empty
-                            |> Set.insert offering
-                            |> Just
-                    )
-                    pivot.offeringsOf
+            | offeringsOf = pivot.offeringsOf |> insertOne person offering
         }
-
-
-othersOf : String -> (String -> a) -> OthersOf -> List a
-othersOf key wrap others =
-    others
-        |> Dict.get key
-        |> Maybe.withDefault Set.empty
-        |> Set.toList
-        |> List.map wrap
 
 
 offeringsOf : PersonId -> Pivot -> List OfferingId
 offeringsOf (PersonId person) (Pivot pivot) =
-    pivot.offeringsOf
-        |> Dict.get person
-        |> Maybe.withDefault Set.empty
-        |> Set.toList
-        |> List.map OfferingId
+    pivot.offeringsOf |> othersOf person OfferingId
 
 
 facilitatorsOf : OfferingId -> Pivot -> List PersonId
