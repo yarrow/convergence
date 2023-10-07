@@ -5,7 +5,7 @@ import Browser exposing (UrlRequest)
 import Browser.Navigation exposing (Key)
 import Lamdera exposing (ClientId, SessionId)
 import Main as ElmLand
-import Types.Lookup exposing (..)
+import Pivot exposing (..)
 import Url exposing (Url)
 
 

@@ -1,8 +1,8 @@
-module Types.Lookup exposing
+module Pivot exposing
     ( OfferingId(..)
     , PersonId(..)
     , Pivot
-    , emptyPivot
+    , empty
     , insertPair
     , offeringsOf
     , personsOf
@@ -40,13 +40,13 @@ othersOf key wrapValue others =
         |> List.map wrapValue
 
 
-emptyPivot : Pivot
-emptyPivot =
+empty : Pivot
+empty =
     Pivot { offeringsOf = Dict.empty, personsOf = Dict.empty }
 
 
-insertOne : String -> String -> MultiDict -> MultiDict
-insertOne key value dict =
+insertFor : String -> String -> MultiDict -> MultiDict
+insertFor key value dict =
     Dict.update key
         (\maybeSet ->
             maybeSet
@@ -60,9 +60,8 @@ insertOne key value dict =
 insertPair : Pivot -> PersonId -> OfferingId -> Pivot
 insertPair (Pivot pivot) (PersonId person) (OfferingId offering) =
     Pivot
-        { pivot
-            | offeringsOf = pivot.offeringsOf |> insertOne person offering
-            , personsOf = pivot.personsOf |> insertOne offering person
+        { offeringsOf = pivot.offeringsOf |> insertFor person offering
+        , personsOf = pivot.personsOf |> insertFor offering person
         }
 
 
