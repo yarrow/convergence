@@ -5,7 +5,7 @@ import Browser exposing (UrlRequest)
 import Browser.Navigation exposing (Key)
 import Lamdera exposing (ClientId, SessionId)
 import Main as ElmLand
-import Pivot exposing (..)
+import Pivot exposing (Pivot)
 import Url exposing (Url)
 
 
@@ -15,6 +15,7 @@ type alias FrontendModel =
 
 type alias BackendModel =
     { smashedLikes : Int
+    , pivot : Pivot
     }
 
 

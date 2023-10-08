@@ -3,6 +3,7 @@ module Backend exposing (..)
 import Bridge exposing (..)
 import Html
 import Lamdera exposing (ClientId, SessionId)
+import Pivot
 import Types exposing (BackendModel, BackendMsg(..), ToFrontend(..))
 
 
@@ -21,7 +22,7 @@ app =
 
 init : ( Model, Cmd BackendMsg )
 init =
-    ( { smashedLikes = 0 }
+    ( { smashedLikes = 0, pivot = Pivot.empty }
     , Cmd.none
     )
 

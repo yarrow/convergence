@@ -1,7 +1,7 @@
 module Pivot exposing
     ( OfferingId(..)
     , PersonId(..)
-    , Pivot
+    , Pivot(..)
     , empty
     , insertPair
     , offeringsOf
